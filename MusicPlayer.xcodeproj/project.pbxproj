@@ -10,7 +10,7 @@
 		F5B06FBB2C8F0BE400F682FC /* MusicPlayerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B06FBA2C8F0BE400F682FC /* MusicPlayerApp.swift */; };
 		F5B06FBF2C8F0BE600F682FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5B06FBE2C8F0BE600F682FC /* Assets.xcassets */; };
 		F5B06FC22C8F0BE600F682FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5B06FC12C8F0BE600F682FC /* Preview Assets.xcassets */; };
-		F5B06FCA2C8F0C1900F682FC /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B06FC92C8F0C1900F682FC /* MainView.swift */; };
+		F5B06FCA2C8F0C1900F682FC /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B06FC92C8F0C1900F682FC /* ChartView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,7 +18,7 @@
 		F5B06FBA2C8F0BE400F682FC /* MusicPlayerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicPlayerApp.swift; sourceTree = "<group>"; };
 		F5B06FBE2C8F0BE600F682FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5B06FC12C8F0BE600F682FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		F5B06FC92C8F0C1900F682FC /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		F5B06FC92C8F0C1900F682FC /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 		F5B06FC82C8F0C0600F682FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				F5B06FC92C8F0C1900F682FC /* MainView.swift */,
+				F5B06FC92C8F0C1900F682FC /* ChartView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -145,7 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5B06FCA2C8F0C1900F682FC /* MainView.swift in Sources */,
+				F5B06FCA2C8F0C1900F682FC /* ChartView.swift in Sources */,
 				F5B06FBB2C8F0BE400F682FC /* MusicPlayerApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
