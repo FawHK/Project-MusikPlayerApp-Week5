@@ -7,48 +7,61 @@
 
 import SwiftUI
 
-struct Song: Identifiable {
-    var id = UUID()
-    
-    var title: String
-    var artist: String
-    var coverImage: String
-}
 
 struct ChartView: View {
     // MARK: - Properties
     
-    let dummies: [Song] = [
-    Song(title: "Ditch", artist: "Lamb of God", coverImage: "ditch"),
-    Song(title: "Momento Mori", artist: "Lamb of God", coverImage: "mementoMori"),
-    Song(title: "To the Hellfire", artist: "Lorna Shore", coverImage: "toTheHellfire")
-    ]
+    @State private var charts: [Result] = []
+    
+//    let dummies: [Song] = [
+//    Song(title: "Ditch", artist: "Lamb of God", coverImage: "ditch"),
+//    Song(title: "Momento Mori", artist: "Lamb of God", coverImage: "mementoMori"),
+//    Song(title: "To the Hellfire", artist: "Lorna Shore", coverImage: "toTheHellfire")
+//    ]
     
     // MARK: - Body
     
     var body: some View {
         
         NavigationStack {
-            List(dummies) { dummy in
+            List(charts, id: \.id) { song in
                 HStack {
-                    Image(dummy.coverImage)
+                    Image(.toTheHellfire)
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
-                        .frame(width: 40, height: 40)
-                        
+                        .frame(width: 30, height: 30)
+                        .padding(.trailing, 10)
+                    
                     VStack(alignment: .leading) {
-                        Text(dummy.artist)
+                        Text("\(song.artistName)")
                             .font(.subheadline)
                             .bold()
                         
-                        Text(dummy.title)
+                        Text(song.name)
                             .font(.caption)
-                            
                     }
                 }
             }
-            .navigationTitle("Top Songs")
+            .navigationTitle("Charts")
+        }
+        .task {
+            fetchSongsFromJSON()
+        }
+    }
+    private func fetchSongsFromJSON() {
+        guard let path = Bundle.main.path(forResource: "Charts", ofType: "json") else {
+            print("File doesn't exist")
+            return
+        }
+        do {
+            let data = try Data(contentsOf: URL(filePath: path))
+            let songs = try JSONDecoder().decode(Chart.self, from: data)
+            
+            self.charts = songs.feed.results
+        } catch {
+            print("Error \(error)")
+            return
         }
     }
 }
