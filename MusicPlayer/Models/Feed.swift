@@ -8,10 +8,10 @@
 import Foundation
 
 struct Chart: Codable {
-    let feed: ChartEntry
+    let feed: Feed
 }
 
-struct ChartEntry: Codable {
+struct Feed: Codable {
     let title: String
     let id: String
     let author: Author
@@ -19,7 +19,7 @@ struct ChartEntry: Codable {
     let country: String
     let icon: String
     let updated: String
-    let results: [Result]
+    let results: [ChartEntry]
     
 }
 
@@ -28,7 +28,7 @@ struct Author: Codable {
     let url: String
 }
 
-struct Result: Codable {
+struct ChartEntry: Codable {
     let artistName: String
     let id: String
     let name: String
@@ -43,8 +43,8 @@ struct Result: Codable {
 }
 
 struct Genre: Codable {
-    let genreId: String
+    let genreId: String?
     let name: String
-    let url: String
+    let url: String?
 }
 
