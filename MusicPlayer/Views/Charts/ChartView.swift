@@ -13,29 +13,33 @@ struct ChartView: View {
     
     @State private var charts: [ChartEntry] = []
     @State private var selectedCountry: Country = .germany
- 
+    
     
     // MARK: - Body
     
     var body: some View {
         
         NavigationStack {
-            List {
-                Section {
-                    Picker("Select Country", selection: $selectedCountry) {
-                        ForEach(Country.allCases) { country in
-                            Text("\(country.name)")
-                                .tag(country)
-                        }
-                    }
-                }
+            
+            Picker("Select Country", selection: $selectedCountry) {
+                ForEach(Country.allCases) { country in
+                    Text("\(country.name)")
+                        .tag(country)
                     
-                ForEach(charts, id: \.id) { song in
+                    
+                }
+                .foregroundStyle(.white)
+            }
+            .pickerStyle(.navigationLink)
+            .padding([.horizontal, .top])
+            .foregroundStyle(.red)
+           
+            List(charts, id: \.id) { chart in
+                NavigationLink {
+                    SongDetalisView(songDetails: chart)
+                } label: {
                     HStack {
-                        let str = song.artworkUrl100
-                        let url = URL(string: str)
-                        
-                        AsyncImage(url: url) { image in
+                        AsyncImage(url: URL(string: chart.artworkUrl100)) { image in
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -47,17 +51,17 @@ struct ChartView: View {
                         }
                         
                         VStack(alignment: .leading) {
-                            Text("\(song.artistName)")
+                            Text("\(chart.artistName)")
                                 .font(.subheadline)
                                 .bold()
                             
-                            Text(song.name)
+                            Text(chart.name)
                                 .font(.caption)
                         }
                     }
                 }
             }
-            .navigationTitle("Charts")
+            .navigationTitle("Top 10 Songs")
         }
         .onChange(of: selectedCountry) {
             fetchSongs()
@@ -81,7 +85,6 @@ struct ChartView: View {
         }
     }
     
-    
     private func getSongsFromAPI() async throws -> [ChartEntry] {
         let urlString = selectedCountry.url
         
@@ -91,25 +94,24 @@ struct ChartView: View {
         
         let (data, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode(Chart.self, from: data).feed.results
-
+        
     }
     
-    
-//    private func fetchSongsFromJSON() {
-//        guard let path = Bundle.main.path(forResource: "ChartsDE", ofType: "json") else {
-//            print("File doesn't exist")
-//            return
-//        }
-//        do {
-//            let data = try Data(contentsOf: URL(filePath: path))
-//            let songs = try JSONDecoder().decode(Chart.self, from: data)
-//            
-//            self.charts = songs.feed.results
-//        } catch {
-//            print("Error \(error)")
-//            return
-//        }
-//    }
+    //    private func fetchSongsFromJSON() {
+    //        guard let path = Bundle.main.path(forResource: "ChartsDE", ofType: "json") else {
+    //            print("File doesn't exist")
+    //            return
+    //        }
+    //        do {
+    //            let data = try Data(contentsOf: URL(filePath: path))
+    //            let songs = try JSONDecoder().decode(Chart.self, from: data)
+    //
+    //            self.charts = songs.feed.results
+    //        } catch {
+    //            print("Error \(error)")
+    //            return
+    //        }
+    //    }
 }
 
 #Preview {

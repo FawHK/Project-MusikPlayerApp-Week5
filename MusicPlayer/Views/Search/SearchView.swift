@@ -8,79 +8,99 @@
 import SwiftUI
 
 struct SearchView: View {
-    @State private var songs: [SongDetails] = []
-    @State private var selectedCountry: Country = .germany
+    @State private var songs: [ArtistDetails] = []
     @State private var text: String = ""
-    
+    @State private var selectedURL: SearchFilter = .song
     
     
     var body: some View {
-        VStack {
-            HStack {
-                TextField("Search Music", text: $text)
-                    .textFieldStyle(.roundedBorder)
-                    .padding()
-                
-                Button {
-                    fetchSongs()
+        NavigationStack {
+            VStack {
+                HStack {
+                    TextField("Search Music", text: $text)
+                        .textFieldStyle(.roundedBorder)
                     
-                } label: {
-                    Text("Search")
-                        .foregroundStyle(.red)
-                        .padding(.trailing)
-                }
-            }
-            Section {
-                Picker("Select Country", selection: $selectedCountry) {
-                    ForEach(Country.allCases) { country in
-                        Text("\(country.name)")
-                            .tag(country)
+                    Button(action: fetchSongs) {
+                        Text("Search")
+                            .foregroundStyle(.red)
                     }
                 }
+                .padding()
+                
+                Picker("Filter", selection: $selectedURL ) {
+                    ForEach(SearchFilter.allCases) { filter in
+                        Text(filter.name)
+                            .tag(filter)
+                    }
+                    
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal)
+                
+                List(songs, id: \.trackId) { song in
+                    NavigationLink {
+                        MusicSearchDetailsView(searchDetails: song)
+                    } label: {
+                        HStack {
+                            AsyncImage(url: URL(string: song.artworkUrl100)) { image in
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.trailing, 8)
+                            } placeholder: {
+                                ProgressView()
+                            }
+                            
+                            VStack(alignment: .leading) {
+                                Text("\(song.artistName)")
+                                    .font(.subheadline)
+                                    .bold()
+                                
+                                Text(song.trackName ?? song.collectionName)
+                                    .font(.caption)
+                            }
+                        }
+                    }    
+                }
+                
             }
-            List(songs, id: \.trackId) { song in
-                Text(song.artistName)
-            
+            .navigationTitle("Music Finder")
+            .onChange(of: selectedURL) {
+                text = ""
+                fetchSongs()
             }
-            
-        }
-        .task {
-            fetchSongs()
+            .task {
+                fetchSongs()
+            }
         }
     }
-        
     
+    // MARK: - Functions
     
     private func fetchSongs() {
         Task {
             do {
                 songs = try await getSongsFromAPI()
-                print(songs)
             } catch let error as HTTPError {
                 print(error.message)
             } catch {
-                print(HTTPError.fetchFailed.message)
+                print(error)
             }
         }
     }
     
-    private func getSongsFromAPI() async throws -> [SongDetails] {
-        let countryCode = selectedCountry.rawValue.lowercased()
-        let urlString = "https://itunes.apple.com/search?term=\(text.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&country=\(countryCode)"
-      
-        
+    private func getSongsFromAPI() async throws -> [ArtistDetails] {
+        let inputFilter = selectedURL.rawValue
+        let urlString = "https://itunes.apple.com/search?term=\(text)&media=mucis&entity=\(inputFilter)&limit=10"
+//        let urlString = "https://itunes.apple.com/search?term=\(text)&media=music&limit=100"
         
         guard let url = URL(string: urlString) else {
             throw HTTPError.invalidURL
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        if let httpResonse = response as? HTTPURLResponse {
-            print("Status Code: \(httpResonse.statusCode)")
-        }
-//        print(response)
-        print(String(data: data, encoding: .utf8) ?? "No Data")
+        let (data, _) = try await URLSession.shared.data(from: url)
         return try JSONDecoder().decode(SearchResults.self, from: data).results
         
     }
@@ -88,5 +108,4 @@ struct SearchView: View {
 
 #Preview {
     SearchView()
-        .preferredColorScheme(.dark)
 }

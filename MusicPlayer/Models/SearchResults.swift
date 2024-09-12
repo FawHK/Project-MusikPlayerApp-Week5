@@ -7,34 +7,21 @@
 
 import Foundation
 
-//struct SearchSong: Codable {
-//    let resultCount: SearchResults
-//}
 
 struct SearchResults: Codable {
-    var results: [SongDetails]
+    var results: [ArtistDetails]
     
 }
 
-struct SongDetails: Codable {
-    let trackId: Int
+struct ArtistDetails: Codable {
+    let artistId: Int
+    var trackId: Int?
     let artistName: String
-    let trackName: String
+    let collectionName: String
+    var trackName: String?
+    let artistViewUrl: String?
     let artworkUrl100: String
+    let collectionPrice, trackPrice: Double?
 
 }
-//struct SongDetail: Codable, Identifiable {
-//  var id: Int // Verwende das `trackId` aus der API als eindeutige ID
-//  var trackName: String
-//  var artistName: String
-//  var artworkUrl100: String
-//  enum CodingKeys: String, CodingKey {
-//    case id = "trackId"
-//    case trackName
-//    case artistName
-//    case artworkUrl100
-//  }
-//}
-//struct SearchResults: Codable {
-//  var results: [SongDetail]
-//}
+
