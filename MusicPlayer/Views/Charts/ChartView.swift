@@ -25,8 +25,6 @@ struct ChartView: View {
                 ForEach(Country.allCases) { country in
                     Text("\(country.name)")
                         .tag(country)
-                    
-                    
                 }
                 .foregroundStyle(.white)
             }
@@ -36,7 +34,7 @@ struct ChartView: View {
            
             List(charts, id: \.id) { chart in
                 NavigationLink {
-                    SongDetalisView(songDetails: chart)
+                    SongDetailView(artistName: chart.artistName, name: chart.name, artistViewUrl: chart.artistUrl, previewUrl: chart.url, artistUrl: chart.artistUrl, artworkUrl100: chart.artworkUrl100)
                 } label: {
                     HStack {
                         AsyncImage(url: URL(string: chart.artworkUrl100)) { image in

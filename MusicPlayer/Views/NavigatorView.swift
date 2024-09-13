@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NavigatorView: View {
+    
     var body: some View {
         TabView {
             ChartView()

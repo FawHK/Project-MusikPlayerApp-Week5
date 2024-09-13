@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct SearchView: View {
+    
+    // MARK: - Properties
+    
     @State private var songs: [ArtistDetails] = []
     @State private var text: String = ""
     @State private var selectedURL: SearchFilter = .song
     
+    
+    
+    // MARK: - Body
     
     var body: some View {
         NavigationStack {
@@ -31,15 +37,14 @@ struct SearchView: View {
                     ForEach(SearchFilter.allCases) { filter in
                         Text(filter.name)
                             .tag(filter)
-                    }
-                    
+                    } 
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 
-                List(songs, id: \.trackId) { song in
+                List(songs) { song in
                     NavigationLink {
-                        MusicSearchDetailsView(searchDetails: song)
+                        SongDetailView(artistName: song.artistName, name: song.trackName ?? song.collectionName, artistViewUrl: song.artistViewUrl, previewUrl: song.previewUrl ?? "", artworkUrl100: song.artworkUrl100)
                     } label: {
                         HStack {
                             AsyncImage(url: URL(string: song.artworkUrl100)) { image in
@@ -92,9 +97,13 @@ struct SearchView: View {
     }
     
     private func getSongsFromAPI() async throws -> [ArtistDetails] {
-        let inputFilter = selectedURL.rawValue
-        let urlString = "https://itunes.apple.com/search?term=\(text)&media=mucis&entity=\(inputFilter)&limit=10"
-//        let urlString = "https://itunes.apple.com/search?term=\(text)&media=music&limit=100"
+        var urlString = "https://itunes.apple.com/search?term=\(text)media=music"
+        switch selectedURL {
+        case .song:
+            urlString = "https://itunes.apple.com/search?term=\(text)&entity=song&limit=5"
+        case .album:
+            urlString = "https://itunes.apple.com/search?term=\(text)&entity=album&limit=10"
+        }
         
         guard let url = URL(string: urlString) else {
             throw HTTPError.invalidURL
