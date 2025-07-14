@@ -30,12 +30,12 @@ enum Country: String, CaseIterable, Identifiable {
     
     var url: String {
         switch self {
-        case .germany: "https://rss.applemarketingtools.com/api/v2/de/music/most-played/10/songs.json"
-        case .usa: "https://rss.applemarketingtools.com/api/v2/us/music/most-played/10/songs.json"
-        case .denmark: "https://rss.applemarketingtools.com/api/v2/dk/music/most-played/10/songs.json"
-        case .spain: "https://rss.applemarketingtools.com/api/v2/es/music/most-played/10/albums.json"
-        case .italy: "https://rss.applemarketingtools.com/api/v2/it/music/most-played/10/albums.json"
-        case .uae: "https://rss.applemarketingtools.com/api/v2/ae/music/most-played/10/albums.json"
+        case .germany: "https://rss.marketingtools.apple.com/api/v2/de/music/most-played/10/songs.json"
+        case .usa: "https://rss.marketingtools.apple.com/api/v2/us/music/most-played/10/songs.json"
+        case .denmark: "https://rss.marketingtools.apple.com/api/v2/dk/music/most-played/10/songs.json"
+        case .spain: "https://rss.marketingtools.apple.com/api/v2/es/music/most-played/10/songs.json"
+        case .italy: "https://rss.marketingtools.apple.com/api/v2/it/music/most-played/10/songs.json"
+        case .uae: "https://rss.marketingtools.apple.com/api/v2/ae/music/most-played/10/songs.json"
         }
     }
 }

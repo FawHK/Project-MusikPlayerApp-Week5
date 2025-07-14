@@ -100,9 +100,9 @@ struct SearchView: View {
         var urlString = "https://itunes.apple.com/search?term=\(text)media=music"
         switch selectedURL {
         case .song:
-            urlString = "https://itunes.apple.com/search?term=\(text)&entity=song&limit=5"
+            urlString = "https://itunes.apple.com/search?term=\(text)&entity=song&limit=15"
         case .album:
-            urlString = "https://itunes.apple.com/search?term=\(text)&entity=album&limit=10"
+            urlString = "https://itunes.apple.com/search?term=\(text)&entity=album&limit=15"
         }
         
         guard let url = URL(string: urlString) else {

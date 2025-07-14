@@ -23,9 +23,6 @@ struct ImageView: View {
                     .scaledToFill()
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .frame(width: 360, height: 210)
-                    
-                
-                
             } placeholder: {
                 ProgressView()
             }

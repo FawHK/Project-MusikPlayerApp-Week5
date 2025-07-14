@@ -30,7 +30,10 @@ struct SongDetailView: View {
     
     var body: some View {
         
-        VStack(spacing: 50)  {
+        VStack  {
+            let isPreviewAvailable = previewUrl.contains(".m4a") || previewUrl.contains(".mp3")
+            
+            Spacer()
             ImageView(artworkUrl100: artworkUrl100)
             Button {
             } label: {
@@ -40,6 +43,7 @@ struct SongDetailView: View {
                             .resizable()
                             .frame(width: 150, height: 50)
                             .scaledToFit()
+                            .padding(.top, 40.5)
                     }
                 }
             }
@@ -53,7 +57,7 @@ struct SongDetailView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 HStack {
-                    Text("Track")
+                    Text("Track: ")
                     Text(trackName ?? name)
                         .bold()
                 }
@@ -63,53 +67,56 @@ struct SongDetailView: View {
                     Text("Play Preview")
                         .font(.headline)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                    Button(action: audioPlay) {
-                        Image(systemName: "play.circle")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .tint(isPlaying ? .blue : .red)
-                    }
-                    Button(action: audioPlay) {
-                        Image(systemName: "pause.circle")
+
+                    Button {
+                        if isPlaying {
+                            audioPause()
+                        } else {
+                            audioPlay()
+                        }
+                    } label: {
+                        Image(systemName: isPlaying ? "pause.circle" : "play.circle")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .tint(isPlaying ? .red : .blue)
                     }
+                    .disabled(!isPreviewAvailable)
                 }
                 .padding()
                 .background(.gray.opacity(0.3))
                 .clipShape(RoundedRectangle(cornerRadius: 40))
                 
+                if !isPreviewAvailable {
+                    Text("Preview is not available for this Song")
+                        .font(.caption)
+                } else {
+                    Text("")
+                }
+                
             }
             .padding()
             .font(.subheadline)
-            .padding(.bottom, 150)
+            .padding(.bottom, 110)
         }
     }
     // MARK: - Functions
     
-    private func pausePreview() {
-        if !isPlaying {
-            previewPlayer?.pause()
-            isPlaying.toggle()
-        }
-    }
-    private func playPreview() {
-        if isPlaying {
-            previewPlayer?.play()
-            isPlaying.toggle()
-        }
-    }
     private func audioPlay() {
-        let urlString = previewUrl
-        guard let Url = URL(string: urlString) else {
+        guard !previewUrl.isEmpty, let url = URL(string: previewUrl) else {
+            print("Invalid or empty previewUrl: \(previewUrl)")
             return
         }
-        previewPlayer = AVPlayer(url: Url)
+        previewPlayer = AVPlayer(url: url)
         previewPlayer?.play()
+        isPlaying = true
+    }
+
+    private func audioPause() {
+        previewPlayer?.pause()
+        isPlaying = false
     }
 }
 
 #Preview {
-    SongDetailView(artistName: "Fawwaz", name: "dd", artistViewUrl: "", previewUrl: "", artistUrl: "df", artworkUrl100: "")
+    SongDetailView(artistName: "Fawwaz", name: "dd", artistViewUrl: "https://music.apple.com/ae/artist/alex-warren/1572671688", previewUrl: "", artistUrl: "https://music.apple.com/ae/artist/alex-warren/1572671688", artworkUrl100: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/46/78/fb/4678fb84-d19e-f11b-93ff-4dc17660bff8/075679619075.jpg/100x100bb.jpg")
 }

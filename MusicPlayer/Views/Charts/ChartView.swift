@@ -20,7 +20,6 @@ struct ChartView: View {
     var body: some View {
         
         NavigationStack {
-            
             Picker("Select Country", selection: $selectedCountry) {
                 ForEach(Country.allCases) { country in
                     Text("\(country.name)")
@@ -52,6 +51,7 @@ struct ChartView: View {
                             Text("\(chart.artistName)")
                                 .font(.subheadline)
                                 .bold()
+                                .lineLimit(1)
                             
                             Text(chart.name)
                                 .font(.caption)
@@ -94,6 +94,7 @@ struct ChartView: View {
         return try JSONDecoder().decode(Chart.self, from: data).feed.results
         
     }
+    // MARK: - First we learned fetching from JSON
     
     //    private func fetchSongsFromJSON() {
     //        guard let path = Bundle.main.path(forResource: "ChartsDE", ofType: "json") else {
