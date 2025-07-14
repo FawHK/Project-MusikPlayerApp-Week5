@@ -5,10 +5,10 @@ MusicPlayer is an iOS app designed to help you discover, search, and preview top
 ## Screenshots
 
 <p>
-<img src="./img/HomeScreen.png" width="200">
-<img src="./img/AddSheet.png" width="200">
-<img src="./img/DetailsScreen.png" width="200">
-<img src="./img/FavoritesScreen.png" width="200">
+<img src="./img/HomeScreen1.png" width="200">
+<img src="./img/HomeScreen2.png" width="200">
+<img src="./img/ChartsDetailsScreen.png" width="200">
+<img src="./img/SongSearch.png" width="200">
 </p>
 
 ## Features
@@ -34,7 +34,3 @@ MusicPlayer is an iOS app designed to help you discover, search, and preview top
 ## Note
 
 This project is being developed as part of my 1-year training journey to become an app developer. It is a work in progress, and I am continuously learning and improving the app as I grow my skills.
-
----
-
-Feel free to contribute, suggest features, or report issues! 
